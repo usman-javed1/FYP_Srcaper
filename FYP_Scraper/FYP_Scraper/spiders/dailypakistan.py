@@ -11,7 +11,7 @@ class DailyPakistanSpider(scrapy.Spider):
     allowed_domains = ["dailypakistan.com.pk"]
     start_urls = ["https://dailypakistan.com.pk/crime-and-justice"]
     scraped_count = 0
-    skipped_count = 0
+    skipped_count = 0 
     custom_settings = {
         'FEED_EXPORT_ENCODING': 'utf-8',
         'FEED_EXPORT_FIELDS': ['title', 'date', 'url', 'content', 'category', 'source', 'reported_time'],
