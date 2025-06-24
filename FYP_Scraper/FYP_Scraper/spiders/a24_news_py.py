@@ -10,13 +10,13 @@ class TwentyFourUrduNewsSpider(scrapy.Spider):
     start_urls = ["https://www.24urdu.com/crime-and-punishment"]
     scraped_count = 0
     skipped_count = 0
-    current_offset = 20  # Start after initial 20 posts
+    current_offset = 0  # Start after initial 20 posts
 
     custom_settings = {
         'FEED_EXPORT_ENCODING': 'utf-8',
         'FEED_EXPORT_FIELDS': ['title', 'date', 'url', 'content', 'category', 'source', 'reported_time'],
         'USER_AGENT': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36',
-        'DOWNLOAD_DELAY': 2,
+        'DOWNLOAD_DELAY': 3,
         'DUPEFILTER_DEBUG': True,
         'FEED_URI': '24News.csv',
         'FEED_FORMAT': 'csv',
