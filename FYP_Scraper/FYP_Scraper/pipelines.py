@@ -6,6 +6,11 @@ from scrapy.exceptions import DropItem
 from dotenv import load_dotenv
 from urllib.parse import quote_plus
 import os
+import sys
+import dns.resolver
+
+dns.resolver.default_resolver = dns.resolver.Resolver()
+dns.resolver.default_resolver.nameservers = ['8.8.8.8']
 
 class MongoDBPipeline:
     def __init__(self):
@@ -56,6 +61,7 @@ class MongoDBPipeline:
                 spider.logger.info(f"New article saved to {collection_name}: {adapter['url']}")
             else:
                 spider.logger.info(f"Article updated in {collection_name}: {adapter['url']}")
+                # os._exit(0)
                 
             return item
 

@@ -18,7 +18,7 @@ class NawaiwaqtSpider(scrapy.Spider):
     def start_requests(self):  
         formdata = {
             'post_per_page': '28',
-            'post_listing_limit_offset': '33804',
+            'post_listing_limit_offset': '0',
             'directory_name': 'categories_pages',
             'template_name': 'lazy_loading',
             'category_name': 'crime-court',
@@ -29,7 +29,7 @@ class NawaiwaqtSpider(scrapy.Spider):
             url=self.ajax_url,
             formdata=formdata,
             callback=self.parse_ajax,
-            meta={'offset': 33804}
+            meta={'offset': 28}
         ) 
     
 
@@ -93,5 +93,5 @@ class NawaiwaqtSpider(scrapy.Spider):
         item['category'] = 'N/A'
         item['reported_time'] =  "N/A"
         
-        self.logger.info(f"Scraped article from {date_str}: {title}")
+        # self.logger.info(f"Scraped article from {date_str}: {title}")
         yield item
