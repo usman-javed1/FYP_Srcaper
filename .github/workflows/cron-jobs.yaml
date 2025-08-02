@@ -55,8 +55,8 @@ jobs:
           cd FYP_Scraper
           
           # Run weather scraping spiders
-          scrapy crawl timeanddate_weather || echo "timeanddate_weather failed"
-          scrapy crawl timeanddate_weather_selenium || echo "timeanddate_weather_selenium failed"
+        #   scrapy crawl timeanddate_weather || echo "timeanddate_weather failed"
+        #   scrapy crawl timeanddate_weather_selenium || echo "timeanddate_weather_selenium failed"
 
       - name: Check for Failures
         if: failure()
