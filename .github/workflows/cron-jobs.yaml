@@ -3,6 +3,7 @@ name: Run Multiple Scripts Daily
 on:
   schedule:
     - cron: '0 0 * * *'  # Every day at 00:00 UTC
+  workflow_dispatch:  # Allow manual triggering
 
 jobs:
   run-multiple:
@@ -27,6 +28,7 @@ jobs:
         env:
           MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
           MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
         run: |
           cd FYP_Scraper
           
@@ -52,9 +54,9 @@ jobs:
         run: |
           cd FYP_Scraper
           
-        #   # Run weather scraping spiders
-        #   scrapy crawl timeanddate_weather || echo "timeanddate_weather failed"
-        #   scrapy crawl timeanddate_weather_selenium || echo "timeanddate_weather_selenium failed"
+          # Run weather scraping spiders
+          scrapy crawl timeanddate_weather || echo "timeanddate_weather failed"
+          scrapy crawl timeanddate_weather_selenium || echo "timeanddate_weather_selenium failed"
 
       - name: Check for Failures
         if: failure()
