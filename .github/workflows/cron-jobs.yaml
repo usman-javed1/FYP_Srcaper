@@ -45,20 +45,3 @@ jobs:
           scrapy crawl nawaiwaqt || echo "nawaiwaqt failed"
           scrapy crawl 24_news || echo "24_news failed"
           scrapy crawl dunya_news || echo "dunya_news failed"
-
-      - name: Run Weather Scraping Scripts
-        env:
-          MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
-          MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
-          MONGODB_URI: ${{ secrets.MONGODB_URI }}
-        run: |
-          cd FYP_Scraper
-          
-          # Run weather scraping spiders
-        #   scrapy crawl timeanddate_weather || echo "timeanddate_weather failed"
-        #   scrapy crawl timeanddate_weather_selenium || echo "timeanddate_weather_selenium failed"
-
-      - name: Check for Failures
-        if: failure()
-        run: |
-          echo "Some scripts failed during execution. Check the logs above for details." 
