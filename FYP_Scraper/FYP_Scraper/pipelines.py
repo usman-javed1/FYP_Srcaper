@@ -20,6 +20,7 @@ class MongoDBPipeline:
         self.mongo_uri = f"mongodb+srv://{username}:{password}@cluster0.66sawpl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
         self.client = None
         self.db = None
+        self.consecutive_updates = 0  # Track consecutive updates
 
     def open_spider(self, spider):
         try:
@@ -59,9 +60,15 @@ class MongoDBPipeline:
             
             if result.upserted_id:
                 spider.logger.info(f"New article saved to {collection_name}: {adapter['url']}")
+                self.consecutive_updates = 0  
             else:
-                spider.logger.info(f"Article updated in {collection_name}: {adapter['url']}")
-                # os._exit(0)
+                self.consecutive_updates += 1  
+                spider.logger.info(f"Article updated in {collection_name}: {adapter['url']} (Consecutive updates: {self.consecutive_updates})")
+                
+                if self.consecutive_updates >= 10:
+                    spider.logger.info(f"Exiting after {self.consecutive_updates} consecutive updates")
+                    print("Exiting after 10 consecutive updates...")
+                    os._exit(0)
                 
             return item
 

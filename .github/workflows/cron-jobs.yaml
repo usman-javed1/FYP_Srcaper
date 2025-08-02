@@ -1,0 +1,62 @@
+name: Run Multiple Scripts Daily
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Every day at 00:00 UTC
+
+jobs:
+  run-multiple:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: live
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run News Scraping Scripts
+        env:
+          MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
+          MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+        run: |
+          cd FYP_Scraper
+          
+          # Run news scraping spiders
+          scrapy crawl city42 || echo "city42 failed"
+          scrapy crawl daily_Pakistan || echo "daily_Pakistan failed"
+          scrapy crawl urdupoint_multi_category -a selected_category=murder || echo "urdupoint murder failed"
+          scrapy crawl urdupoint_multi_category -a selected_category=thief || echo "urdupoint thief failed"
+          scrapy crawl urdupoint_multi_category -a selected_category=robbery || echo "urdupoint robbery failed"
+          scrapy crawl urdupoint_multi_category -a selected_category=terrorism || echo "urdupoint terrorism failed"
+          scrapy crawl urdupoint_multi_category -a selected_category=kidnapping || echo "urdupoint kidnapping failed"
+          scrapy crawl urdupoint_multi_category -a selected_category=rape || echo "urdupoint rape failed"
+          scrapy crawl urdupoint_multi_category -a selected_category=suicide || echo "urdupoint suicide failed"
+          scrapy crawl nawaiwaqt || echo "nawaiwaqt failed"
+          scrapy crawl 24_news || echo "24_news failed"
+          scrapy crawl dunya_news || echo "dunya_news failed"
+
+      - name: Run Weather Scraping Scripts
+        env:
+          MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
+          MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        run: |
+          cd FYP_Scraper
+          
+        #   # Run weather scraping spiders
+        #   scrapy crawl timeanddate_weather || echo "timeanddate_weather failed"
+        #   scrapy crawl timeanddate_weather_selenium || echo "timeanddate_weather_selenium failed"
+
+      - name: Check for Failures
+        if: failure()
+        run: |
+          echo "Some scripts failed during execution. Check the logs above for details." 
